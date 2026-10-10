@@ -475,7 +475,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
   </main>
 
   <!-- [F-12] 頁尾版本 -->
-  <footer class="footer" data-spec="F-12"><span id="footerVersion">v1.1 · 最後更新 2026-10-10</span></footer>
+  <footer class="footer" data-spec="F-12"><span id="footerVersion">v1.2 · 最後更新 2026-10-10</span></footer>
 </div>
 
 <!-- [F-11] 底部提示訊息 -->
@@ -546,8 +546,8 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
     </div>
     <p class="about-lead">幾秒記好一筆，一眼看懂錢花到哪裡，每天知道「今天還能花多少」，月底不爆預算。</p>
     <dl class="about-meta">
-      <div><dt>規格版本</dt><dd>規格書 v1.1（2026-10-10）</dd></div>
-      <div><dt>網站版本</dt><dd id="aboutVersion">v1.1</dd></div>
+      <div><dt>規格版本</dt><dd>規格書 v1.2（2026-10-10）</dd></div>
+      <div><dt>網站版本</dt><dd id="aboutVersion">v1.2</dd></div>
       <div><dt>資料儲存</dt><dd>只存在這台裝置的瀏覽器（localStorage），沒有登入、不會上傳</dd></div>
     </dl>
     <label class="switch">
@@ -566,7 +566,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
 <script>
 'use strict';
 /* =====================================================================
- * 月底不吃土 v1.1 — 單一 index.html，原生 HTML／CSS／JavaScript
+ * 月底不吃土 v1.2 — 單一 index.html，原生 HTML／CSS／JavaScript
  * 架構：資料集中在 state；任何變更先 save() 再 render()（commit）
  * 程式用 // [F-xx] 標出對應規格書的功能編號
  * ===================================================================== */
@@ -602,18 +602,31 @@ const countsInBudget = r => r.type === 'expense' && r.category !== 'housing';
 // [F-12] 版本紀錄（由新到舊；只記真正做過的修改）
 const VERSIONS = [
   {
+    v: 'v1.2', date: '2026-10-10', spec: 'F-01～F-12',
+    feedback: '依 AI 測試回饋修正：第 2 輪由 4 組 AI 測試（驗證修正、回歸、視覺、規格對照）回報 19 項，合併重複後 16 項不同問題，採納並修正 12 項，其餘 4 項評估後不改（原因記在測試紀錄）。規格書同步升為 v1.2。',
+    change: [
+      '【F-03】另一個分頁改了資料時，已失效的「復原」提示會一併收起，不再留下按了沒反應的按鈕；連點「編輯」後游標仍留在金額欄',
+      '【F-01】快速連點「記一筆」，成功儲存後不會再跳出紅色金額錯誤',
+      '【F-08】儲存失敗的橫幅被關掉後，下一次儲存仍失敗會再次顯示',
+      '【F-06】手機旋轉或縮放視窗後，已點選的長條提示框與焦點會保留；長條圖的朗讀文字加入日均預算金額；規格補上「<1%」的寫法',
+      '【F-05】今天已超出或本月已超支時，卡片標籤改為「今天」「本月預算」，不再與「今天還能花」互相矛盾',
+      '【F-04】負 10 萬以下的結餘（如 −NT$123,456）在 360px 手機不再超出格子',
+      '【F-12】補記 v1.1 實際做了但漏記的 3 項修改（F-01 備註截斷、F-03 其他提示取代「復原」、F-05 清空預算欄不閃紅字）',
+    ],
+  },
+  {
     v: 'v1.1', date: '2026-10-10', spec: 'F-01～F-12',
     feedback: '依 AI 測試回饋修正：9 組 AI 測試（共 1,980 項檢查）回報 103 項問題，確認屬實的已修正，規格書同步升為 v1.1。最重要的兩項：照規格 T-6-4 重新整理後，黃色橫幅被捲到畫面外；快速連點「刪除」會連刪兩筆。',
     change: [
       '【F-08】重新整理後橫幅一定看得到（不再被捲到畫面外）；另一個分頁改了資料會自動同步，不再被舊資料蓋掉',
-      '【F-03】連點「刪除」「編輯」不再連刪或誤觸；拖曳選字放開在視窗外不會關掉編輯視窗；用鍵盤刪除後焦點直接移到「復原」，焦點在提示上時 5 秒計時暫停',
+      '【F-03】連點「刪除」「編輯」不再連刪或誤觸；拖曳選字放開在視窗外不會關掉編輯視窗；用鍵盤刪除後焦點直接移到「復原」，焦點在提示上時 5 秒計時暫停；其他提示訊息會取代「復原」提示，復原一併失效',
       '【F-04】手機窄螢幕 NT$12,000 不再斷成兩行；月份列、明細日期標題、匯出按鈕在 360px 不再折行；回到本月後焦點不再消失',
-      '【F-05】月底預估改為先乘後除（避免 .5 差 1 元）；剛好用完預算時「NT$0」改為紅字',
+      '【F-05】月底預估改為先乘後除（避免 .5 差 1 元）；剛好用完預算時「NT$0」改為紅字；預算欄清空時不再閃紅色錯誤',
       '【F-06】甜甜圈中央總額依位數縮小，不再壓到圓環；百分比加總恰為 100%；日均預算金額改放圖例，圖例只列出實際有畫的項目；再點一次已選分類可取消篩選；Y 軸刻度與提示框位置修正；縮放視窗不再造成水平捲軸或 ResizeObserver 警告',
       '【F-07】點排行或圓餅會清掉舊關鍵字；注音輸入組字中不再即時篩選；操作後焦點留在明細標題',
       '【F-09】匯入拒絕未來日期；無法儲存時不再顯示「匯入成功」；匯入訊息不再殘留',
       '【F-10】範例資料每月都有「飲料．珍奶」讓 T-5 可操作；週六是今天時也有娛樂社交；今天的範例紀錄不再比現在晚；日均落在約 NT$250–260，不再月月爆預算；清除全部資料同時重設篩選',
-      '【F-01】備註以「字」計算（emoji 算 1 字）',
+      '【F-01】備註以「字」計算（emoji 算 1 字），超過 30 字自動截斷（不再用 maxlength）',
       '【F-11】桌機剛好兩欄（約 900–1,040px）時排行與搜尋框不再被擠壓；對比不足的 3 組文字配色加深；加上左右安全區邊界；說明文字避免孤字',
       '【F-12】顯示功能編號時頁首標籤不再被切掉；版本紀錄改為條列',
     ],
@@ -781,10 +794,9 @@ function save() {
   return ok;
 }
 function setStorageOk(ok) {
-  if (ok === state.storageOk) return;
   state.storageOk = ok;
-  if (ok) hideBanner('storage');
-  else showBanner('storage', '目前無法儲存，關閉頁面後資料會遺失，請先匯出備份');
+  if (ok) { if (state.banners.has('storage')) hideBanner('storage'); }
+  else if (!state.banners.has('storage')) showBanner('storage', '目前無法儲存，關閉頁面後資料會遺失，請先匯出備份');   // 關掉橫幅後，下一次儲存仍失敗會再提醒
 }
 // 任何變更：先 save() 再 render()
 function commit() { save(); render(); }
@@ -842,7 +854,7 @@ function renderSummary(recs) {
   const income = sumBy(recs, r => r.type === 'income');
   const expense = sumBy(recs, r => r.type === 'expense');
   const balance = income - expense;
-  const setStat = (el, n) => { el.replaceChildren(...moneyNodes(n)); el.classList.toggle('long', money(n).length > 11); }; // 7 位數以上字再縮小
+  const setStat = (el, n) => { el.replaceChildren(...moneyNodes(n)); el.classList.toggle('long', money(n).length >= 11); }; // 7 位數以上字再縮小
   setStat($('#statIncome'), income);
   setStat($('#statExpense'), expense);
   const b = $('#statBalance');
@@ -905,9 +917,11 @@ function renderBudget(recs) {
   if (b.isCurrent) {
     label.textContent = '今天還能花';
     if (b.level === 'over') {
+      label.textContent = '本月預算';
       value.textContent = `🚨 本月已超支 ${money(-b.left)}`; value.dataset.tone = 'danger';
       sub.textContent = `本月計入預算的支出 ${money(b.spent)}，預算 ${money(b.budget)}`;
     } else if (b.canSpend < 0) {
+      label.textContent = '今天';
       value.textContent = `今天已超出 ${money(-b.canSpend)}`; value.dataset.tone = 'danger';
       sub.textContent = `今日額度 ${money(b.quota)}，今天已花 ${money(b.todaySpent)}`;
     } else {
@@ -1028,7 +1042,7 @@ function drawBars(recs) {
   const bw = Math.max(3, Math.min(22, slot * 0.66));
   const yOf = v => T + ph - (v / top) * ph;
   const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', tabindex: 0,
-    'aria-label': `${monthText(y, m)}每日支出長條圖，用左右方向鍵查看每天金額` });
+    'aria-label': `${monthText(y, m)}每日支出長條圖${avg > 0 ? `，日均預算 ${money(Math.round(avg))}` : ''}，用左右方向鍵查看每天金額` });
   for (const g of [0, top / 2, top]) {
     svg.append(svgEl('line', { x1: L, x2: W - R, y1: yOf(g), y2: yOf(g), class: 'grid-line' }));
     svg.append(svgEl('text', { x: L - 6, y: yOf(g) + 4, 'text-anchor': 'end', class: 'axis-label' }, shortNum(g)));
@@ -1063,7 +1077,10 @@ function drawBars(recs) {
   });
   svg.addEventListener('focus', () => { if (!state.barSel) selectBar(cur ? t.d : lastDay); });
   svg.addEventListener('blur', clearBarSel);
+  const keepSel = state.barSel, hadFocus = $('#bars').contains(document.activeElement);   // 旋轉／縮放重畫：保留已選的長條與焦點
   $('#bars').replaceChildren(svg);
+  state.barSel = keepSel;                         // 舊圖被移除時的 blur 會清掉選取，這裡補回
+  if (hadFocus) svg.focus({ preventScroll: true });
   // 圖例只列出實際有畫的項目；日均預算的金額寫在圖例裡
   const key = (cls, style, text) => h('span', {}, h('i', { class: cls, style }), text);
   $('#barLegend').replaceChildren(key(null, 'background:#4F46E5', avg > 0 ? '未超過日均' : '每日支出'),
@@ -1240,10 +1257,14 @@ function readEntry(f) {
   if (!CAT[category] || CAT[category].type !== type) { toast('請選擇分類'); return null; }
   return { type, amount, category, date: f.date.value, note };
 }
+let lastEntryAt = -1e9;
 function onEntrySubmit(e) {
   e.preventDefault();
-  const f = FORMS.main, v = readEntry(f);
+  const f = FORMS.main;
+  if (f.amount.value.trim() === '' && performance.now() - lastEntryAt < 300) return;   // 雙擊「記一筆」：第二下是重複送出，不顯示金額錯誤
+  const v = readEntry(f);
   if (!v) return;
+  lastEntryAt = performance.now();
   const taken = new Set(state.data.records.map(r => r.id));
   const rec = { id: newId(taken), type: v.type, amount: v.amount, category: v.category, note: v.note, date: v.date, createdAt: Date.now() };
   state.data.records.push(rec);
@@ -1638,6 +1659,7 @@ function setupMisc() {
   $$('dialog').forEach(dlg => {
     let downOutside;
     dlg.addEventListener('pointerdown', e => { downOutside = e.target === dlg; });
+    dlg.addEventListener('mousedown', e => { if (e.detail > 1 && performance.now() - (dlg._openAt || 0) < 700) e.preventDefault(); });  // 連點第二下不搶走焦點
     dlg.addEventListener('click', e => {
       if (e.detail > 1 && performance.now() - (dlg._openAt || 0) < 700) { e.preventDefault(); return; }
       const r = dlg.getBoundingClientRect();
@@ -1664,6 +1686,7 @@ function setupMisc() {
     if (e.key !== null && e.key !== STORAGE_KEY) return;
     state.data = load();
     state.undo = null;
+    if ($('#toast').classList.contains('has-action')) hideToast();   // 復原暫存已失效：「復原」提示一併收起，不留下按了沒用的按鈕
     render();
   });
   // [F-11] 焦點在提示上時暫停計時（鍵盤使用者才來得及按「復原」）
