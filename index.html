@@ -29,7 +29,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .muted { color: var(--muted); }
 .small { font-size: 13px; }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px calc(96px + env(safe-area-inset-bottom)); }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
 
 /* [F-12] 顯示功能編號：data-spec + CSS */
 [data-spec] { position: relative; }
@@ -37,6 +37,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   content: attr(data-spec); position: absolute; top: -10px; left: 10px; z-index: 5; pointer-events: none;
   background: #111827; color: #fff; font: 700 11px/1 Consolas, "Courier New", monospace; padding: 4px 7px; border-radius: 6px;
 }
+.show-spec .wrap { padding-top: 14px; }
 
 /* [F-08] 警示橫幅 */
 .banners { display: grid; gap: 8px; padding-top: 12px; }
@@ -51,7 +52,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .logo { flex: none; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; background: linear-gradient(135deg, #818CF8, #4F46E5); box-shadow: 0 6px 16px rgba(79, 70, 229, .3); }
 h1 { font-size: 22px; font-weight: 800; letter-spacing: .03em; line-height: 1.2; }
-.tagline { font-size: 13px; color: var(--muted); }
+.tagline { font-size: 13px; color: var(--muted); text-wrap: balance; }
 
 /* 按鈕 */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--border); background: #fff; font-weight: 600; font-size: 15px; cursor: pointer; transition: background-color .15s, border-color .15s, transform .05s; white-space: nowrap; }
@@ -81,6 +82,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 /* [F-04] 月份列 */
 .monthbar { display: flex; align-items: center; gap: 6px; padding: 8px; margin-bottom: 16px; }
 .monthbar h2 { flex: 1; min-width: 0; text-align: center; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 380px) { .monthbar h2 { font-size: 16px; } .monthbar .btn { padding: 0 10px; } }
 
 /* [F-11] 版面：手機單欄、桌機兩欄 */
 .layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
@@ -95,10 +97,11 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 
 /* [F-04] 收支摘要 */
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.stat { background: #F9FAFB; border: 1px solid #F0F1F4; border-radius: 12px; padding: 10px 8px 10px 10px; min-width: 0; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.stat { background: #F9FAFB; border: 1px solid #F0F1F4; border-radius: 12px; padding: 10px 6px 10px 8px; min-width: 0; }
 .stat-label { display: block; font-size: 13px; color: var(--muted); font-weight: 600; }
-.stat-value { display: block; font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; line-height: 1.3; }
+.stat-value { display: block; font-size: clamp(13px, 4vw, 17px); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1.3; }
+.stat-value.long { font-size: clamp(11px, 3.2vw, 14px); }
 .stat-value.income { color: var(--income); }
 .stat-value.neg { color: var(--danger); }
 .cur { font-size: .72em; font-weight: 700; margin-right: 1px; }
@@ -121,7 +124,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 999px; font-size: 14px; font-weight: 800; transition: background-color .3s, color .3s; }
 .pill[data-tone="ok"] { background: #E8F6EF; color: var(--ok-text); }
 .pill[data-tone="warn"] { background: #FEF3C7; color: var(--warn-text); }
-.pill[data-tone="danger"] { background: #FEF2F2; color: var(--danger); }
+.pill[data-tone="danger"] { background: #fff; color: var(--danger); box-shadow: inset 0 0 0 1px #FCA5A5; }
 .used-text { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
 .details > div { background: #F9FAFB; border-radius: 10px; padding: 8px 10px; min-width: 0; }
@@ -139,7 +142,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 /* [F-01] 記一筆表單 */
 .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #F3F4F6; border-radius: 12px; padding: 4px; border: 0; margin: 0 0 14px; min-width: 0; }
 .seg input, .cat input, .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-.seg label { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 9px; font-weight: 700; cursor: pointer; color: var(--muted); transition: background-color .15s, color .15s; }
+.seg label { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 9px; font-weight: 700; cursor: pointer; color: #4B5563; transition: background-color .15s, color .15s; }
 .seg input:checked + label { background: #fff; color: var(--accent); box-shadow: 0 1px 3px rgba(0, 0, 0, .1); }
 .seg input[value="income"]:checked + label { color: var(--income); }
 .seg input:focus-visible + label, .cat input:focus-visible + label, .switch input:focus-visible + .switch-ui { outline: 3px solid rgba(79, 70, 229, .55); outline-offset: 2px; }
@@ -178,6 +181,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-right: 34px; 
 .rank-btn { width: 100%; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto 42px; column-gap: 8px; row-gap: 5px; align-items: center; min-height: 48px; padding: 6px 10px; border: 1px solid transparent; border-radius: 12px; background: none; cursor: pointer; text-align: left; }
 .rank-btn:hover { background: #F9FAFB; }
 .rank-btn.active { background: var(--accent-weak); border-color: #C7D2FE; }
+.rank-btn.active .rank-pct { color: #4B5563; }
 .rank-dot { width: 10px; height: 10px; border-radius: 50%; }
 .rank-name { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rank-amt { font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums; }
@@ -185,6 +189,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-right: 34px; 
 .rank-bar { grid-column: 2 / -1; height: 4px; border-radius: 2px; background: #F0F1F4; overflow: hidden; }
 .rank-bar span { display: block; height: 100%; border-radius: 2px; }
 @media (min-width: 600px) { .donut-wrap { grid-template-columns: 180px minmax(0, 1fr); gap: 24px; } }
+@media (min-width: 900px) and (max-width: 979px) { .donut-wrap { grid-template-columns: minmax(0, 1fr); } }
 .bars-wrap { position: relative; margin-top: 4px; }
 .bars-wrap svg { display: block; width: 100%; height: auto; }
 .bars-wrap svg:focus { outline: none; }
@@ -199,7 +204,6 @@ select.input { appearance: none; -webkit-appearance: none; padding-right: 34px; 
 .has-sel .bar:not(.sel) { opacity: .4; }
 .bar-hit { fill: transparent; cursor: pointer; }
 .avg-line { stroke: var(--warn-text); stroke-width: 1.5; stroke-dasharray: 5 4; }
-.avg-label { font-size: 11px; font-weight: 800; fill: var(--warn-text); paint-order: stroke; stroke: #fff; stroke-width: 3px; }
 .bar-tip { position: absolute; left: 0; top: 0; transform: translateY(-100%); background: var(--text); color: #fff; font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s; font-variant-numeric: tabular-nums; }
 .bar-tip.show { opacity: 1; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); margin-top: 6px; }
@@ -212,14 +216,19 @@ select.input { appearance: none; -webkit-appearance: none; padding-right: 34px; 
 .filters .field { margin: 0; }
 .filters .f-q { grid-column: 1 / -1; }
 @media (min-width: 600px) { .filters { grid-template-columns: 130px 170px minmax(0, 1fr); } .filters .f-q { grid-column: auto; } }
+@media (min-width: 900px) and (max-width: 1039px) { .filters { grid-template-columns: 1fr 1fr; } .filters .f-q { grid-column: 1 / -1; } }
+@media (max-width: 340px) { .cat label { font-size: 12px; } }
+.filter-summary > span { min-width: 0; }
+#clearFilter { flex: none; white-space: nowrap; }
 .filter-summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; margin: 8px 0 0; font-size: 14px; color: var(--muted); font-weight: 600; }
 .filter-summary.active { color: var(--accent); }
 
 /* [F-02] 明細清單 */
 .list, .rows { list-style: none; margin: 0; padding: 0; }
 .group { margin-top: 10px; }
-.group-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: var(--muted); padding: 6px 4px; border-bottom: 1px solid var(--border); }
-.group-sum { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.group-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 2px 8px; font-size: 14px; font-weight: 800; color: var(--muted); padding: 6px 4px; border-bottom: 1px solid var(--border); }
+.group-head > span:first-child { white-space: nowrap; }
+.group-sum { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; margin-left: auto; }
 .day-badge { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: var(--accent-weak); color: var(--accent); font-size: 12px; }
 .row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 4px; border-bottom: 1px solid #F3F4F6; }
 .row-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; }
@@ -242,20 +251,23 @@ select.input { appearance: none; -webkit-appearance: none; padding-right: 34px; 
 
 /* [F-09][F-10] 設定與資料 */
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.btn-grid .btn { white-space: normal; text-align: center; line-height: 1.25; padding: 8px 10px; }
+.btn-grid .btn { white-space: normal; text-align: center; line-height: 1.25; padding: 8px 6px; }
+.btn-grid:has(#exportJson) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 .btn-grid .span-2 { grid-column: 1 / -1; }
 .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
 .msg { margin-top: 10px; font-size: 14px; font-weight: 700; padding: 8px 12px; border-radius: 10px; }
 .msg[data-tone="ok"] { background: #E8F6EF; color: var(--ok-text); }
-.msg[data-tone="error"] { background: #FEF2F2; color: var(--danger); }
-.msg[data-tone="info"] { background: #F3F4F6; color: var(--muted); }
+.msg[data-tone="error"] { background: #fff; color: var(--danger); box-shadow: inset 0 0 0 1px #FCA5A5; }
+.msg[data-tone="info"] { background: #F3F4F6; color: #4B5563; }
+.hint, .note-line, .about-lead, .dlg-text { text-wrap: balance; }
 
 /* 頁尾 */
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 28px 0 8px; }
 
 /* [F-11] 底部提示訊息 */
-.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 50; display: flex; align-items: center; gap: 12px; width: max-content; max-width: calc(100% - 32px); background: #1F2937; color: #fff; padding: 8px 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); font-size: 15px; font-weight: 600; opacity: 0; visibility: hidden; transform: translate(-50%, 16px); transition: opacity .2s, transform .2s, visibility .2s; }
-.toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 50; display: flex; align-items: center; gap: 12px; width: max-content; max-width: calc(100% - 32px); background: #1F2937; color: #fff; padding: 8px 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); font-size: 15px; font-weight: 600; opacity: 0; visibility: hidden; transform: translate(-50%, 16px); transition: opacity .2s, transform .2s, visibility 0s linear .2s; }
+.toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity .2s, transform .2s, visibility 0s; }
+.toast button:focus-visible { outline-color: #fff; }
 .toast.has-action { padding-right: 8px; }
 .toast-text { padding: 8px 0; }
 .toast button { min-height: 44px; min-width: 64px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, .14); color: #C7D2FE; font-weight: 800; cursor: pointer; }
@@ -283,7 +295,10 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
 .ver-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
 .ver-head strong { font-size: 16px; }
 .tag { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-weak); border-radius: 999px; padding: 2px 8px; }
-.ver p + p { margin-top: 4px; }
+.ver p + p, .ver ul { margin-top: 4px; }
+.ver p, .ver li { text-wrap: balance; }
+.about-meta dd { text-wrap: balance; }
+.ver ul { margin-bottom: 0; padding-left: 1.3em; }
 .ver b { color: var(--muted); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -381,7 +396,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
         </div>
         <div class="field">
           <label class="field-label" for="note">備註（選填）<span id="noteCount" class="counter">0/30</span></label>
-          <input id="note" class="input" type="text" maxlength="30" enterkeyhint="done" placeholder="例如：自助餐" aria-describedby="noteErr">
+          <input id="note" class="input" type="text" enterkeyhint="done" placeholder="例如：自助餐" aria-describedby="noteErr">
           <p id="noteErr" class="err" role="alert" hidden></p>
         </div>
         <button type="submit" class="btn btn-primary btn-block btn-lg">記一筆</button>
@@ -402,23 +417,18 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
             <div id="donut" class="donut"></div>
             <ol id="ranking" class="ranking" aria-label="分類支出排行"></ol>
           </div>
-          <h3 class="sub-title">每日支出 <span class="muted small">（只算計入預算的支出）</span></h3>
+          <h3 class="sub-title">每日支出 <span class="muted small">（NT$，只算計入預算的支出）</span></h3>
           <div id="barsWrap" class="bars-wrap">
             <div id="bars"></div>
             <div id="barTip" class="bar-tip" role="status" aria-live="polite"></div>
           </div>
-          <div class="legend" aria-hidden="true">
-            <span><i style="background:#4F46E5"></i>未超過日均</span>
-            <span><i style="background:#F59E0B"></i>超過日均預算</span>
-            <span><i class="l-dash"></i>日均預算</span>
-            <span><i class="l-today"></i>今天</span>
-          </div>
+          <div id="barLegend" class="legend" aria-hidden="true"></div>
         </div>
       </section>
 
       <!-- [F-07] 篩選列 + [F-02][F-03] 明細清單 -->
       <section id="listCard" class="card" data-spec="F-07 F-02 F-03" aria-labelledby="listTitle">
-        <h2 id="listTitle" class="card-title">明細</h2>
+        <h2 id="listTitle" class="card-title" tabindex="-1">明細</h2>
         <div class="filters" role="search" aria-label="篩選明細">
           <div class="field f-type"><label class="field-label" for="fType">類型</label>
             <select id="fType" class="input"><option value="all">全部</option><option value="expense">支出</option><option value="income">收入</option></select></div>
@@ -465,7 +475,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
   </main>
 
   <!-- [F-12] 頁尾版本 -->
-  <footer class="footer" data-spec="F-12"><span id="footerVersion">v1.0 · 最後更新 2026-10-10</span></footer>
+  <footer class="footer" data-spec="F-12"><span id="footerVersion">v1.1 · 最後更新 2026-10-10</span></footer>
 </div>
 
 <!-- [F-11] 底部提示訊息 -->
@@ -505,7 +515,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
     </div>
     <div class="field">
       <label class="field-label" for="eNote">備註（選填）<span id="eNoteCount" class="counter">0/30</span></label>
-      <input id="eNote" class="input" type="text" maxlength="30" aria-describedby="eNoteErr">
+      <input id="eNote" class="input" type="text" aria-describedby="eNoteErr">
       <p id="eNoteErr" class="err" role="alert" hidden></p>
     </div>
     <div class="dlg-actions">
@@ -536,8 +546,8 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
     </div>
     <p class="about-lead">幾秒記好一筆，一眼看懂錢花到哪裡，每天知道「今天還能花多少」，月底不爆預算。</p>
     <dl class="about-meta">
-      <div><dt>規格版本</dt><dd>規格書 v1.0（2026-10-10）</dd></div>
-      <div><dt>網站版本</dt><dd id="aboutVersion">v1.0</dd></div>
+      <div><dt>規格版本</dt><dd>規格書 v1.1（2026-10-10）</dd></div>
+      <div><dt>網站版本</dt><dd id="aboutVersion">v1.1</dd></div>
       <div><dt>資料儲存</dt><dd>只存在這台裝置的瀏覽器（localStorage），沒有登入、不會上傳</dd></div>
     </dl>
     <label class="switch">
@@ -556,7 +566,7 @@ dialog::backdrop { background: rgba(17, 24, 39, .5); }
 <script>
 'use strict';
 /* =====================================================================
- * 月底不吃土 v1.0 — 單一 index.html，原生 HTML／CSS／JavaScript
+ * 月底不吃土 v1.1 — 單一 index.html，原生 HTML／CSS／JavaScript
  * 架構：資料集中在 state；任何變更先 save() 再 render()（commit）
  * 程式用 // [F-xx] 標出對應規格書的功能編號
  * ===================================================================== */
@@ -592,8 +602,25 @@ const countsInBudget = r => r.type === 'expense' && r.category !== 'housing';
 // [F-12] 版本紀錄（由新到舊；只記真正做過的修改）
 const VERSIONS = [
   {
+    v: 'v1.1', date: '2026-10-10', spec: 'F-01～F-12',
+    feedback: '依 AI 測試回饋修正：9 組 AI 測試（共 1,980 項檢查）回報 103 項問題，確認屬實的已修正，規格書同步升為 v1.1。最重要的兩項：照規格 T-6-4 重新整理後，黃色橫幅被捲到畫面外；快速連點「刪除」會連刪兩筆。',
+    change: [
+      '【F-08】重新整理後橫幅一定看得到（不再被捲到畫面外）；另一個分頁改了資料會自動同步，不再被舊資料蓋掉',
+      '【F-03】連點「刪除」「編輯」不再連刪或誤觸；拖曳選字放開在視窗外不會關掉編輯視窗；用鍵盤刪除後焦點直接移到「復原」，焦點在提示上時 5 秒計時暫停',
+      '【F-04】手機窄螢幕 NT$12,000 不再斷成兩行；月份列、明細日期標題、匯出按鈕在 360px 不再折行；回到本月後焦點不再消失',
+      '【F-05】月底預估改為先乘後除（避免 .5 差 1 元）；剛好用完預算時「NT$0」改為紅字',
+      '【F-06】甜甜圈中央總額依位數縮小，不再壓到圓環；百分比加總恰為 100%；日均預算金額改放圖例，圖例只列出實際有畫的項目；再點一次已選分類可取消篩選；Y 軸刻度與提示框位置修正；縮放視窗不再造成水平捲軸或 ResizeObserver 警告',
+      '【F-07】點排行或圓餅會清掉舊關鍵字；注音輸入組字中不再即時篩選；操作後焦點留在明細標題',
+      '【F-09】匯入拒絕未來日期；無法儲存時不再顯示「匯入成功」；匯入訊息不再殘留',
+      '【F-10】範例資料每月都有「飲料．珍奶」讓 T-5 可操作；週六是今天時也有娛樂社交；今天的範例紀錄不再比現在晚；日均落在約 NT$250–260，不再月月爆預算；清除全部資料同時重設篩選',
+      '【F-01】備註以「字」計算（emoji 算 1 字）',
+      '【F-11】桌機剛好兩欄（約 900–1,040px）時排行與搜尋框不再被擠壓；對比不足的 3 組文字配色加深；加上左右安全區邊界；說明文字避免孤字',
+      '【F-12】顯示功能編號時頁首標籤不再被切掉；版本紀錄改為條列',
+    ],
+  },
+  {
     v: 'v1.0', date: '2026-10-10', spec: 'F-01～F-12',
-    feedback: '初版：一句話構想 → 和 AI 從使用者體驗、資料邏輯、評分標準三個角度討論，整理成規格書 v1.0。',
+    feedback: '一句話構想 → 和 AI 從使用者體驗、資料邏輯、評分標準三個角度討論，整理成規格書 v1.0。',
     change: '依規格書完成初版：快速記一筆、明細清單、編輯／刪除／復原、月份切換與收支摘要、月預算與「今天還能花」、SVG 圓餅圖與每日長條圖、篩選搜尋、自動儲存與錯誤處理、CSV／JSON 匯出匯入、範例資料、響應式版面、關於面板。',
   },
 ];
@@ -682,14 +709,16 @@ const state = {
 };
 
 // ===== 3. 資料驗證（表單、讀取、匯入共用同一套規則） =====
-function validateStoredRecord(r) {
+const charLen = s => [...s].length;               // 備註以「字」計，emoji 算 1 字
+function validateStoredRecord(r, strict) {
   if (!r || typeof r !== 'object' || Array.isArray(r)) return null;
   if (r.type !== 'expense' && r.type !== 'income') return null;
   if (!Number.isInteger(r.amount) || r.amount < 1 || r.amount > MAX_AMOUNT) return null;
   if (!CAT[r.category] || CAT[r.category].type !== r.type) return null;
   if (!parseYMD(r.date)) return null;
+  if (strict && r.date > state.today) return null;   // 匯入不收未來日期（和 F-01 一致）
   const note = r.note == null ? '' : r.note;
-  if (typeof note !== 'string' || note.trim().length > NOTE_MAX) return null;
+  if (typeof note !== 'string' || charLen(note.trim()) > NOTE_MAX) return null;
   return {
     id: typeof r.id === 'string' && r.id.length > 0 && r.id.length <= 64 ? r.id : null,
     type: r.type, amount: r.amount, category: r.category, note: note.trim(), date: r.date,
@@ -708,7 +737,7 @@ function buildData(obj, strict) {
   const taken = new Set(), records = [];
   let dropped = 0;
   for (let i = 0; i < obj.records.length; i++) {
-    const r = validateStoredRecord(obj.records[i]);
+    const r = validateStoredRecord(obj.records[i], strict);
     if (!r) { if (strict) return { error: 'record', index: i + 1 }; dropped++; continue; }
     if (!r.id || taken.has(r.id)) r.id = newId(taken);
     if (r.createdAt == null) { const { y, m, d } = parseYMD(r.date); r.createdAt = new Date(y, m - 1, d, 12).getTime() + i; }
@@ -792,17 +821,20 @@ function render() {
 // [F-04] 月份列：預設本月；在本月時「›」停用，不在本月時出現「回到本月」
 function renderMonthBar() {
   const { y, m } = state.view, cur = isCurrentView();
-  $('#monthLabel').textContent = monthText(y, m);
+  const label = $('#monthLabel'), text = monthText(y, m);
+  if (label.textContent !== text) label.textContent = text;     // 文字沒變就不重寫（避免讀屏重複朗讀）
   $('#nextMonth').disabled = cur;
   $('#thisMonth').hidden = cur;
   $('#summaryTitle').textContent = cur ? '本月總覽' : `${monthText(y, m)}總覽`;
 }
 function shiftMonth(delta) {
+  const had = document.activeElement;
   const t = parseYMD(state.today), cur = monthIndex(t.y, t.m);
   const i = Math.min(cur, monthIndex(state.view.y, state.view.m) + delta);
   state.view = fromIndex(i);
   state.barSel = null;
   render();
+  if (had && (had.disabled || had.hidden)) $('#prevMonth').focus();   // 「›」停用或「回到本月」消失時，焦點移到「‹」
 }
 
 // [F-04] 本月收支摘要：收入、支出、結餘（負數紅字）
@@ -810,10 +842,11 @@ function renderSummary(recs) {
   const income = sumBy(recs, r => r.type === 'income');
   const expense = sumBy(recs, r => r.type === 'expense');
   const balance = income - expense;
-  $('#statIncome').replaceChildren(...moneyNodes(income));
-  $('#statExpense').replaceChildren(...moneyNodes(expense));
+  const setStat = (el, n) => { el.replaceChildren(...moneyNodes(n)); el.classList.toggle('long', money(n).length > 11); }; // 7 位數以上字再縮小
+  setStat($('#statIncome'), income);
+  setStat($('#statExpense'), expense);
   const b = $('#statBalance');
-  b.replaceChildren(...moneyNodes(balance));
+  setStat(b, balance);
   b.classList.toggle('neg', balance < 0);
   renderBudget(recs);
 }
@@ -837,7 +870,7 @@ function computeBudget(recs, y, m) {
     res.remainingDays = days - t.d + 1;                      // 剩餘天數 = 當月天數 − 今天日期 + 1
     res.quota = Math.floor((budget - before) / res.remainingDays); // 今日額度
     res.canSpend = res.quota - res.todaySpent;               // 今天還能花
-    res.forecast = t.d >= 5 ? Math.round((spent / t.d) * days) : null; // 月底預估（5 日起）
+    res.forecast = t.d >= 5 ? Math.round((spent * days) / t.d) : null; // 月底預估（5 日起）
   }
   return res;
 }
@@ -878,7 +911,7 @@ function renderBudget(recs) {
       value.textContent = `今天已超出 ${money(-b.canSpend)}`; value.dataset.tone = 'danger';
       sub.textContent = `今日額度 ${money(b.quota)}，今天已花 ${money(b.todaySpent)}`;
     } else {
-      value.textContent = money(b.canSpend); value.dataset.tone = 'ok';
+      value.textContent = money(b.canSpend); value.dataset.tone = b.level === 'full' ? 'danger' : 'ok'; // 剛好用完：NT$0 用紅字
       sub.textContent = `今日額度 ${money(b.quota)} − 今天已花 ${money(b.todaySpent)}`;
     }
     items.push(
@@ -921,45 +954,54 @@ function renderCharts(recs) {
   drawRanking(items, total);
   drawBars(recs);
 }
-const pctOf = (a, total) => Math.round((a * 100) / total);
+// 百分比：最大餘數法四捨五入，加總恰為 100%
+const pctText = p => (p === 0 ? '<1%' : p + '%');   // 有金額的分類不顯示 0%
+function pcts(items, total) {
+  const raw = items.map(x => (x.amount * 100) / total), p = raw.map(Math.floor);
+  const left = 100 - p.reduce((a, b) => a + b, 0);
+  raw.map((v, i) => [v - p[i], i]).sort((a, b) => b[0] - a[0]).slice(0, left).forEach(([, i]) => { p[i]++; });
+  return p;
+}
 
 function drawDonut(items, total) {
   const R = 70, SW = 26, C = 2 * Math.PI * R, gap = items.length > 1 ? 1.5 : 0;
-  const sel = state.filter.category;
+  const sel = state.filter.category, P = pcts(items, total);
   const svg = svgEl('svg', { viewBox: '0 0 200 200', role: 'img',
-    'aria-label': `支出分類：共 ${money(total)}，` + items.map(x => `${x.c.name} ${pctOf(x.amount, total)}%`).join('、') });
+    'aria-label': `支出分類：共 ${money(total)}，` + items.map((x, i) => `${x.c.name} ${pctText(P[i])}`).join('、') });
   svg.append(svgEl('circle', { cx: 100, cy: 100, r: R, fill: 'none', stroke: '#EEF0F4', 'stroke-width': SW }));
   let offset = 0;
-  for (const x of items) {
+  for (const [i, x] of items.entries()) {
     const len = (x.amount / total) * C;
     const seg = svgEl('circle', {
       cx: 100, cy: 100, r: R, fill: 'none', stroke: x.c.color, 'stroke-width': SW,
       'stroke-dasharray': `${Math.max(len - gap, 0.5).toFixed(2)} ${C.toFixed(2)}`, 'stroke-dashoffset': (-offset).toFixed(2),
-      transform: 'rotate(-90 100 100)', class: 'donut-seg' + (CAT[sel] && sel !== x.c.id ? ' dim' : ''),
+      transform: 'rotate(-90 100 100)', class: 'donut-seg' + (CAT[sel] && CAT[sel].type === 'expense' && sel !== x.c.id ? ' dim' : ''),
     });
-    seg.append(svgEl('title', {}, `${x.c.emoji} ${x.c.name} ${money(x.amount)}（${pctOf(x.amount, total)}%）`));
+    seg.append(svgEl('title', {}, `${x.c.emoji} ${x.c.name} ${money(x.amount)}（${pctText(P[i])}）`));
     seg.addEventListener('click', () => applyCategoryFilter(x.c.id));
     svg.append(seg);
     offset += len;
   }
   svg.append(svgEl('text', { x: 100, y: 92, 'text-anchor': 'middle', class: 'donut-label' }, isCurrentView() ? '本月支出' : '當月支出'));
-  svg.append(svgEl('text', { x: 100, y: 118, 'text-anchor': 'middle', class: 'donut-total' }, money(total)));
+  const totalText = money(total), fs = Math.min(21, Math.floor(96 / (0.6 * totalText.length))); // 位數多就縮小，不壓到圓環
+  svg.append(svgEl('text', { x: 100, y: 118, 'text-anchor': 'middle', class: 'donut-total', style: `font-size:${fs}px` }, totalText));
   $('#donut').replaceChildren(svg);
 }
 
 // 排行：依金額大到小，如「🍱 餐飲 NT$3,000 75%」；點一下套用分類篩選（F-07）
 function drawRanking(items, total) {
-  $('#ranking').replaceChildren(...items.map(x => {
-    const p = pctOf(x.amount, total), active = state.filter.category === x.c.id;
+  const P = pcts(items, total);
+  $('#ranking').replaceChildren(...items.map((x, i) => {
+    const p = P[i], active = state.filter.category === x.c.id;
     return h('li', {}, h('button', {
       type: 'button', class: 'rank-btn' + (active ? ' active' : ''), 'aria-pressed': String(active),
-      'aria-label': `${x.c.name} ${money(x.amount)}，${p}%，點一下只看${x.c.name}的明細`,
+      'aria-label': `${x.c.name} ${money(x.amount)}，${pctText(p)}，點一下只看${x.c.name}的明細`,
       onclick: () => applyCategoryFilter(x.c.id),
     },
     h('span', { class: 'rank-dot', style: `background:${x.c.color}` }),
     h('span', { class: 'rank-name' }, `${x.c.emoji} ${x.c.name}`),
     h('span', { class: 'rank-amt' }, money(x.amount)),
-    h('span', { class: 'rank-pct' }, p + '%'),
+    h('span', { class: 'rank-pct' }, pctText(p)),
     h('span', { class: 'rank-bar' }, h('span', { style: `width:${p}%;background:${x.c.color}` }))));
   }));
 }
@@ -969,7 +1011,7 @@ function niceMax(v) {
   for (const k of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (k * p >= v) return k * p;
   return 10 * p;
 }
-const shortNum = n => (n >= 10000 ? Math.round(n / 1000) + 'k' : Math.round(n).toLocaleString('zh-TW'));
+const shortNum = n => (n >= 1e6 ? n / 1e6 + 'M' : n >= 10000 ? Math.round(n / 100) / 10 + 'k' : Number.isInteger(n) ? n.toLocaleString('zh-TW') : n.toFixed(1));
 
 let barCtx = null, lastBarsW = 0;
 function drawBars(recs) {
@@ -1001,7 +1043,6 @@ function drawBars(recs) {
   if (avg > 0) {                                  // 每日平均預算虛線（預算 ÷ 當月天數）
     const ay = yOf(avg);
     svg.append(svgEl('line', { x1: L, x2: W - R, y1: ay, y2: ay, class: 'avg-line' }));
-    svg.append(svgEl('text', { x: W - R, y: ay - 6 < T ? ay + 14 : ay - 6, 'text-anchor': 'end', class: 'avg-label' }, `日均預算 ${money(Math.round(avg))}`));
   }
   for (const d of new Set([1, 5, 10, 15, 20, 25, D])) {
     svg.append(svgEl('text', { x: (L + (d - 0.5) * slot).toFixed(1), y: H - 6, 'text-anchor': 'middle',
@@ -1023,6 +1064,11 @@ function drawBars(recs) {
   svg.addEventListener('focus', () => { if (!state.barSel) selectBar(cur ? t.d : lastDay); });
   svg.addEventListener('blur', clearBarSel);
   $('#bars').replaceChildren(svg);
+  // 圖例只列出實際有畫的項目；日均預算的金額寫在圖例裡
+  const key = (cls, style, text) => h('span', {}, h('i', { class: cls, style }), text);
+  $('#barLegend').replaceChildren(key(null, 'background:#4F46E5', avg > 0 ? '未超過日均' : '每日支出'),
+    ...(avg > 0 ? [key(null, 'background:#F59E0B', '超過日均預算'), key('l-dash', null, `日均預算 ${money(Math.round(avg))}`)] : []),
+    ...(cur ? [key('l-today', null, '今天')] : []));
   barCtx = { svg, vals, lastDay, y, m, W, slot, L, yOf };
   if (state.barSel && state.barSel <= lastDay) selectBar(state.barSel); else hideTip();
 }
@@ -1039,14 +1085,14 @@ function selectBar(d) {
   const scale = wrap.clientWidth / W;
   const cx = (L + (d - 0.5) * slot) * scale, tw = tip.offsetWidth;
   tip.style.left = Math.max(0, Math.min(wrap.clientWidth - tw, cx - tw / 2)) + 'px';
-  tip.style.top = Math.max(0, (yOf(vals[d]) - 6) * scale) + 'px';
+  tip.style.top = Math.max(tip.offsetHeight, (yOf(vals[d]) - 6) * scale) + 'px';   // 不蓋到圖表標題
 }
 function clearBarSel() {
   state.barSel = null;
   if (barCtx) { barCtx.svg.classList.remove('has-sel'); barCtx.svg.querySelectorAll('.bar.sel').forEach(b => b.classList.remove('sel')); }
   hideTip();
 }
-function hideTip() { $('#barTip').classList.remove('show'); }
+function hideTip() { const tip = $('#barTip'); tip.classList.remove('show'); tip.style.left = '0'; tip.style.top = '0'; } // 歸零，避免殘留位置撐出水平捲軸
 
 // ===== 7. [F-07] 篩選與搜尋（只影響清單） =====
 const norm = s => String(s).normalize('NFKC').toLowerCase(); // 不分大小寫與全半形
@@ -1073,18 +1119,23 @@ function syncFilterUI() {
   buildCatOptions();
   if ($('#fQ').value !== state.filter.q) $('#fQ').value = state.filter.q;
 }
+// 按鈕被重畫掉、焦點掉到 <body> 時，把焦點放回指定元素（鍵盤使用者不會迷路）
+function restoreFocus(el) { const a = document.activeElement; if (!a || a === document.body) el.focus({ preventScroll: true }); }
 function clearFilter() {
   state.filter = { type: 'all', category: 'all', q: '' };
   syncFilterUI();
   render();
+  restoreFocus($('#listTitle'));
 }
-// [F-06] 點排行中的分類 → 清單套用該分類篩選並捲動到清單
+// [F-06] 點排行中的分類 → 清單套用該分類篩選並捲動到清單；再點一次同一分類則取消
 function applyCategoryFilter(id) {
-  state.filter.type = CAT[id].type;
-  state.filter.category = id;
+  const f = state.filter;
+  if (f.category === id) { f.type = 'all'; f.category = 'all'; }
+  else { f.type = CAT[id].type; f.category = id; f.q = ''; }
   syncFilterUI();
   render();
-  scrollToEl($('#listCard'));
+  restoreFocus($('#listTitle'));
+  if (f.category !== 'all') scrollToEl($('#listCard'));
 }
 
 // ===== 8. [F-02] 明細清單 =====
@@ -1168,7 +1219,13 @@ function validateDate(f) {
   setErr(f.date, f.dateErr, msg);
   return !msg;
 }
-function updateCounter(f) { f.counter.textContent = `${f.note.value.length}/${NOTE_MAX}`; }
+function updateCounter(f) { f.counter.textContent = `${charLen(f.note.value)}/${NOTE_MAX}`; }
+// 備註最多 30 字（emoji 算 1 字）：超過就截斷
+function clipNote(f) {
+  const chars = [...f.note.value];
+  if (chars.length > NOTE_MAX) f.note.value = chars.slice(0, NOTE_MAX).join('');
+  updateCounter(f);
+}
 // 讀取並驗證表單：不合格就顯示紅字、游標移到第一個錯誤欄位，回傳 null
 function readEntry(f) {
   refreshToday();
@@ -1176,8 +1233,9 @@ function readEntry(f) {
   const amount = parseAmount(f.amount.value), note = f.note.value.trim();
   setErr(f.amount, f.amountErr, amount == null ? '請輸入 1～999,999 的整數金額' : '');
   const dateOk = validateDate(f);
-  setErr(f.note, f.noteErr, note.length > NOTE_MAX ? `備註最多 ${NOTE_MAX} 字` : '');
-  const firstBad = [amount == null && f.amount, !dateOk && f.date, note.length > NOTE_MAX && f.note].find(Boolean);
+  const noteBad = charLen(note) > NOTE_MAX;
+  setErr(f.note, f.noteErr, noteBad ? `備註最多 ${NOTE_MAX} 字` : '');
+  const firstBad = [amount == null && f.amount, !dateOk && f.date, noteBad && f.note].find(Boolean);
   if (firstBad) { firstBad.focus(); return null; }
   if (!CAT[category] || CAT[category].type !== type) { toast('請選擇分類'); return null; }
   return { type, amount, category, date: f.date.value, note };
@@ -1228,7 +1286,8 @@ function wireFieldFeedback(f) {
   f.amount.addEventListener('input', () => setErr(f.amount, f.amountErr, ''));
   f.date.addEventListener('change', () => { validateDate(f); renderQuickDate(); });
   f.date.addEventListener('input', renderQuickDate);
-  f.note.addEventListener('input', () => { setErr(f.note, f.noteErr, ''); updateCounter(f); });
+  f.note.addEventListener('input', e => { setErr(f.note, f.noteErr, ''); if (!e.isComposing) clipNote(f); else updateCounter(f); });
+  f.note.addEventListener('compositionend', () => clipNote(f));
 }
 
 // ===== 10. [F-03] 編輯、刪除與復原 =====
@@ -1246,7 +1305,7 @@ function openEdit(id) {
   f.note.value = r.note;
   updateCounter(f);
   [[f.amount, f.amountErr], [f.date, f.dateErr], [f.note, f.noteErr]].forEach(([i, e]) => setErr(i, e, ''));
-  $('#editDialog').showModal();
+  openDialog($('#editDialog'));
   f.amount.focus();
   f.amount.select();
 }
@@ -1274,10 +1333,10 @@ function setupEditDialog() {
 }
 function focusRow(id) {
   const btn = $('#list').querySelector(`[data-id="${CSS.escape(id)}"] [data-act="edit"]`);
-  if (btn) btn.focus();
+  if (btn) btn.focus(); else restoreFocus($('#listTitle'));   // 紀錄已移到別的月份：焦點放回明細標題
 }
 // 刪除：立即移除、不跳確認，5 秒內可「復原」；只能復原最近一次刪除
-function deleteRecord(id) {
+function deleteRecord(id, viaKeyboard) {
   const idx = state.data.records.findIndex(r => r.id === id);
   if (idx < 0) return;
   const [rec] = state.data.records.splice(idx, 1);
@@ -1285,6 +1344,7 @@ function deleteRecord(id) {
   state.undo = undo;
   commit();
   toast(`已刪除 ${recLabel(rec)}`, { label: '復原', fn: undoDelete, onExpire: () => { if (state.undo === undo) state.undo = null; } });
+  if (viaKeyboard) $('#toastAction').focus();    // 鍵盤刪除：焦點直接移到「復原」，5 秒內一個 Enter 就能救回
 }
 function undoDelete() {
   const u = state.undo;
@@ -1298,24 +1358,36 @@ function undoDelete() {
 }
 
 // ===== 11. [F-11] 底部提示訊息（aria-live；一般 2 秒、有「復原」5 秒） =====
-let toastTimer = 0;
+let toastTimer = 0, toastMs = 0, toastExpire = null;
+function armToast() {
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { hideToast(); if (toastExpire) toastExpire(); }, toastMs);
+}
 function toast(msg, action) {
   const el = $('#toast'), btn = $('#toastAction');
+  if (!action) state.undo = null;               // 其他提示會取代「復原」提示，復原暫存一併失效
   $('#toastText').textContent = msg;
   btn.hidden = !action;
   btn.textContent = action ? action.label : '';
   btn.onclick = action ? () => { hideToast(); action.fn(); } : null;
   el.classList.toggle('has-action', !!action);
   el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { hideToast(); if (action && action.onExpire) action.onExpire(); }, action ? 5000 : 2000);
+  toastMs = action ? 5000 : 2000;
+  toastExpire = action ? action.onExpire : null;
+  armToast();
+  if (action && el.contains(document.activeElement)) clearTimeout(toastTimer);   // 焦點本來就在提示上：計時暫停
 }
 function hideToast() {
-  $('#toast').classList.remove('show');
+  const el = $('#toast');
+  const hadFocus = el.contains(document.activeElement);
+  el.classList.remove('show');
   $('#toastAction').onclick = null;
+  if (hadFocus) $('#listTitle').focus({ preventScroll: true });
 }
 
-// 共用確認視窗（清除全部、匯入取代）
+function openDialog(dlg) { dlg._openAt = performance.now(); dlg.showModal(); }
+
+// 共用確認視窗（清除全部、匯入取代）[F-09][F-10]
 function askConfirm(message, okText, danger) {
   return new Promise(resolve => {
     const dlg = $('#confirmDialog'), ok = $('#confirmOk');
@@ -1324,13 +1396,14 @@ function askConfirm(message, okText, danger) {
     ok.className = 'btn ' + (danger ? 'btn-danger solid' : 'btn-primary');
     dlg.returnValue = '';
     dlg.addEventListener('close', () => resolve(dlg.returnValue === 'ok'), { once: true });
-    dlg.showModal();
+    openDialog(dlg);
     $('#confirmCancel').focus();
   });
 }
 
-// ===== 12. [F-05] 月預算設定（改了立即儲存） =====
+// ===== 12. [F-05][F-09][F-10] 月預算設定與資料區（改了立即儲存） =====
 function renderSettings(recs) {
+  $('#importMsg').hidden = true;                 // 匯入結果訊息只在匯入當下顯示，之後任何畫面更新就收起來
   const input = $('#budgetInput');
   if (document.activeElement !== input) input.value = String(state.data.settings.monthlyBudget);
   $('#csvHint').textContent = `CSV 匯出 ${monthText(state.view.y, state.view.m)}的全部紀錄（${recs.length} 筆，不受篩選影響）。`;
@@ -1341,7 +1414,7 @@ function setupSettings() {
   const input = $('#budgetInput'), err = $('#budgetErr');
   input.addEventListener('input', () => {
     const n = parseAmount(input.value, 0);
-    setErr(input, err, n == null ? '請輸入 0～999,999 的整數（0 代表不設定）' : '');
+    setErr(input, err, n == null && input.value.trim() !== '' ? '請輸入 0～999,999 的整數（0 代表不設定）' : ''); // 清空重打時先不報錯
     if (n != null && n !== state.data.settings.monthlyBudget) { state.data.settings.monthlyBudget = n; commit(); }
   });
   input.addEventListener('change', () => {
@@ -1413,13 +1486,16 @@ async function onImportFile(e) {
   state.data = res.data;
   resetAfterReplace();
   commit();
-  showImportMsg(`匯入成功：共 ${res.data.records.length} 筆紀錄`, 'ok');
+  if (state.storageOk) showImportMsg(`匯入成功：共 ${res.data.records.length} 筆紀錄`, 'ok');
+  else showImportMsg(`已匯入 ${res.data.records.length} 筆，但目前無法儲存，重新整理後會還原，請先匯出備份`, 'error');
   toast(`已匯入備份（${res.data.records.length} 筆）`);
 }
 // 整份資料被取代後（匯入、清除全部）：清掉復原暫存，表單分類回到設定值
 function resetAfterReplace() {
   state.undo = null;
   hideToast();
+  state.filter = { type: 'all', category: 'all', q: '' };   // 舊的篩選條件一併清掉
+  syncFilterUI();
   state.form.expenseCat = state.data.settings.lastCategory;
   if (checkedVal('type') === 'expense') renderCatPicker(FORMS.main.catBox, 'expense', state.form.expenseCat, 'category');
 }
@@ -1450,24 +1526,34 @@ function makeDemoMonth(y, m, lastDay, partialToday) {
   const pick = list => list[Math.floor(rnd() * list.length)];
   const vary = n => (n >= 100 ? n : Math.max(10, n + (Math.floor(rnd() * 3) - 1) * 5));
   let seq = 0;
+  const opt = new Set(), dinner = new Set();        // 選填項目（晚餐、手搖飲…）：用來微調日均
   const add = (d, hour, type, category, [note, amount]) => {
     const date = `${y}-${pad(m)}-${pad(d)}`;
-    out.push({ id: `demo-${y}${pad(m)}${pad(d)}-${seq++}`, type, amount: vary(amount), category, note, date,
-      createdAt: new Date(y, m - 1, d, hour, Math.floor(rnd() * 50)).getTime() });
+    let ts = new Date(y, m - 1, d, hour, Math.floor(rnd() * 50)).getTime();
+    if (partialToday && d === lastDay) ts = Math.min(ts, Date.now() - 60000 + seq);   // 今天的範例紀錄不會比「現在」晚
+    const rec = { id: `demo-${y}${pad(m)}${pad(d)}-${seq++}`, type, amount: vary(amount), category, note, date, createdAt: ts };
+    out.push(rec);
+    return rec;
   };
   for (let d = 1; d <= lastDay; d++) {
     const dow = new Date(y, m - 1, d).getDay(), isToday = partialToday && d === lastDay;
-    if (d === 1) { add(d, 9, 'income', 'allowance', ['家裡給的生活費', 8000]); add(d, 10, 'expense', 'housing', ['房租（含水電）', 5500]); }
+    if (d === 1) { add(d, 9, 'income', 'allowance', ['家裡給的生活費', 8000]); add(d, 10, 'expense', 'housing', ['房租（含水電）', 5500]); add(d, 15, 'expense', 'drink', ['珍奶', 60]); }
     if (d === 15) add(d, 19, 'income', 'parttime', ['飲料店打工薪水', 4000]);
     add(d, 8, 'expense', 'food', pick(DEMO.breakfast));
     add(d, 12, 'expense', 'food', pick(DEMO.lunch));
-    if (rnd() < 0.45) add(d, 15, 'expense', 'drink', pick(DEMO.drink));
+    if (rnd() < 0.45) opt.add(add(d, 15, 'expense', 'drink', pick(DEMO.drink)));
     if (dow >= 1 && dow <= 5 && rnd() < 0.6) add(d, 7, 'expense', 'transport', pick(DEMO.transport));
-    if (isToday) continue;                       // 今天還沒過完：只放早餐、午餐等
-    if (rnd() < 0.4) add(d, 19, 'expense', 'food', pick(DEMO.dinner));
-    if (dow === 6) add(d, 20, 'expense', 'fun', pick(DEMO.fun));
-    if (rnd() < 0.06) add(d, 16, 'expense', 'study', pick(DEMO.study));
-    if (rnd() < 0.06) add(d, 21, 'expense', 'daily', pick(DEMO.daily));
+    if (dow === 6) add(d, 20, 'expense', 'fun', pick(DEMO.fun));   // 每週六娛樂社交（今天是週六也有）
+    if (isToday) continue;                       // 今天還沒過完：不放晚餐、學業、日用
+    if (rnd() < 0.4) { opt.add(add(d, 19, 'expense', 'food', pick(DEMO.dinner))); dinner.add(d); }
+    if (rnd() < 0.06) opt.add(add(d, 16, 'expense', 'study', pick(DEMO.study)));
+    if (rnd() < 0.06) opt.add(add(d, 21, 'expense', 'daily', pick(DEMO.daily)));
+  }
+  // 微調選填項目，讓日均（不含房租）落在約 NT$250–260：太多就拿掉幾筆，太少就補晚餐
+  const spent = () => out.reduce((s, r) => s + (countsInBudget(r) ? r.amount : 0), 0);
+  for (const r of [...opt].reverse()) { if (spent() <= 258 * lastDay) break; out.splice(out.indexOf(r), 1); }
+  for (let d = partialToday ? lastDay - 1 : lastDay; d >= 1 && spent() < 250 * lastDay; d--) {
+    if (!dinner.has(d)) { add(d, 19, 'expense', 'food', pick(DEMO.dinner)); dinner.add(d); }
   }
   return out;
 }
@@ -1478,6 +1564,7 @@ function loadDemo() {
   state.undo = null;
   state.view = { y: t.y, m: t.m };
   commit();
+  restoreFocus($('#listTitle'));
   toast(`已載入範例資料（${demo.length} 筆）`);
 }
 function removeDemo() {
@@ -1504,7 +1591,8 @@ function renderAbout() {
   $('#versionList').replaceChildren(...VERSIONS.map(v => h('li', { class: 'ver' },
     h('div', { class: 'ver-head' }, h('strong', {}, v.v), h('span', { class: 'muted' }, v.date), h('span', { class: 'tag' }, v.spec)),
     h('p', {}, h('b', {}, '回饋／問題：'), v.feedback),
-    h('p', {}, h('b', {}, '修改內容：'), v.change))));
+    h('p', {}, h('b', {}, '修改內容：'), Array.isArray(v.change) ? null : v.change),
+    Array.isArray(v.change) ? h('ul', {}, v.change.map(t => h('li', {}, t))) : null)));
   $('#aboutVersion').textContent = `${VERSIONS[0].v}（${VERSIONS[0].date}）`;
   $('#footerVersion').textContent = `${VERSIONS[0].v} · 最後更新 ${VERSIONS[0].date}`;
 }
@@ -1535,19 +1623,30 @@ function setupMisc() {
     render();
   });
   $('#fCat').addEventListener('change', e => { state.filter.category = e.target.value; render(); });
-  $('#fQ').addEventListener('input', e => { state.filter.q = e.target.value; render(); });
+  const onSearch = e => { state.filter.q = e.target.value; render(); };
+  $('#fQ').addEventListener('input', e => { if (!e.isComposing) onSearch(e); });   // 注音／拼音組字中不篩選
+  $('#fQ').addEventListener('compositionend', onSearch);
   $('#clearFilter').addEventListener('click', clearFilter);
   $('#list').addEventListener('click', e => {
     const btn = e.target.closest('button[data-act]');
-    if (!btn) return;
+    if (!btn || e.detail > 1) return;             // 連點（雙擊）只算第一下，避免連刪兩筆
     const id = btn.closest('[data-id]').getAttribute('data-id');
-    if (btn.dataset.act === 'edit') openEdit(id); else deleteRecord(id);
+    if (btn.dataset.act === 'edit') openEdit(id); else deleteRecord(id, e.detail === 0);
   });
   // 對話框：按 × / 取消 / 點視窗外關閉（Esc 由 <dialog> 內建處理）
-  $$('dialog').forEach(dlg => dlg.addEventListener('click', e => {
-    if (e.target === dlg || e.target.closest('[data-close]')) dlg.close('cancel');
-  }));
-  $('#aboutBtn').addEventListener('click', () => { renderAbout(); $('#aboutDialog').showModal(); });
+  // 只有「按下」和「放開」都在視窗外才算點視窗外（拖曳選字放開在外面不關）；連點開啟時的第二下忽略
+  $$('dialog').forEach(dlg => {
+    let downOutside;
+    dlg.addEventListener('pointerdown', e => { downOutside = e.target === dlg; });
+    dlg.addEventListener('click', e => {
+      if (e.detail > 1 && performance.now() - (dlg._openAt || 0) < 700) { e.preventDefault(); return; }
+      const r = dlg.getBoundingClientRect();
+      const outside = e.target === dlg && downOutside !== false && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom);
+      downOutside = undefined;
+      if (outside || e.target.closest('[data-close]')) dlg.close('cancel');
+    });
+  });
+  $('#aboutBtn').addEventListener('click', () => { renderAbout(); openDialog($('#aboutDialog')); });
   $('#specToggle').addEventListener('change', e => document.documentElement.classList.toggle('show-spec', e.target.checked));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshToday(); });
   window.addEventListener('focus', refreshToday);
@@ -1556,10 +1655,25 @@ function setupMisc() {
     const w = $('#barsWrap').clientWidth;
     if (w && Math.abs(w - lastBarsW) > 1 && !$('#chartsBody').hidden) drawBars(monthRecords());
   };
-  if ('ResizeObserver' in window) new ResizeObserver(redrawBars).observe($('#barsWrap'));
-  else window.addEventListener('resize', redrawBars);
+  let redrawQueued = false;                       // 下一個畫面再重畫，避免 ResizeObserver loop 警告
+  const redrawLater = () => { if (!redrawQueued) { redrawQueued = true; requestAnimationFrame(() => { redrawQueued = false; redrawBars(); }); } };
+  if ('ResizeObserver' in window) new ResizeObserver(redrawLater).observe($('#barsWrap'));
+  else window.addEventListener('resize', redrawLater);
+  // [F-08] 另一個分頁改了資料：重新讀取，避免這個分頁用舊資料蓋掉
+  window.addEventListener('storage', e => {
+    if (e.key !== null && e.key !== STORAGE_KEY) return;
+    state.data = load();
+    state.undo = null;
+    render();
+  });
+  // [F-11] 焦點在提示上時暫停計時（鍵盤使用者才來得及按「復原」）
+  const tEl = $('#toast');
+  tEl.addEventListener('focusin', () => { if (tEl.classList.contains('has-action')) clearTimeout(toastTimer); });
+  tEl.addEventListener('focusout', () => { if (tEl.classList.contains('has-action') && tEl.classList.contains('show')) armToast(); });
 }
 function init() {
+  // 重新整理時不還原捲動位置：載入時才出現的橫幅（F-08）插在頁面最上方，還原位置會把它推到畫面外
+  try { history.scrollRestoration = 'manual'; } catch (e) { /* 忽略 */ }
   state.data = load();
   const t = parseYMD(state.today);
   state.view = { y: t.y, m: t.m };                // 重新整理後回到本月
